@@ -4,8 +4,10 @@ sourceMapSupport.install();
 import axiosFactory from '@js-entity-repos/axios/dist/factory';
 import facadeTest from '@js-entity-repos/core/dist/tests';
 import { TestEntity } from '@js-entity-repos/core/dist/tests/utils/testEntity';
+import * as assert from 'assert';
 import axios from 'axios';
 import { config } from 'dotenv';
+import { BAD_REQUEST, OK } from 'http-status-codes';
 import 'mocha'; // tslint:disable-line:no-import-side-effect
 import createTestServer from './utils/createTestServer';
 config();
@@ -31,9 +33,25 @@ after(async () => {
   server.close();
 });
 
+const axiosClient = axios.create({
+  baseURL: `http://localhost:${testServerPort}${testServerRoute}`,
+});
+
 facadeTest(axiosFactory<TestEntity>({
-  axios: axios.create({
-    baseURL: `http://localhost:${testServerPort}${testServerRoute}`,
-  }),
+  axios: axiosClient,
   entityName: 'Test Entity',
 }));
+
+describe('facade', () => {
+  it('should not throw JSON error', async () => {
+    const response = await axiosClient.get('/');
+    assert.equal(response.status, OK);
+  });
+  it('should throw JSON error when using invalid filter', async () => {
+    await axiosClient.get('/?filter=invalid_json').then((response) => {
+      return { response };
+    }).catch((err) => {
+      assert.equal(err.response.status, BAD_REQUEST);
+    });
+  });
+});

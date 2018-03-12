@@ -1,12 +1,11 @@
 import ConflictingEntityError from '@js-entity-repos/core/dist/errors/ConflictingEntityError';
 import MissingEntityError from '@js-entity-repos/core/dist/errors/MissingEntityError';
-import { Request, Response } from 'express';
-import { CONFLICT, INTERNAL_SERVER_ERROR, NOT_FOUND } from 'http-status-codes';
+import { BAD_REQUEST, CONFLICT, INTERNAL_SERVER_ERROR, NOT_FOUND } from 'http-status-codes';
+import ErrorCatcher from './ErrorCatcher';
+import JsonSyntaxError from './JsonSyntaxError';
 
-export type Handler = (req: Request, res: Response) => Promise<void>;
-
-export default (handler: Handler) => {
-  return (req: Request, res: Response) => {
+const errorCatcher: ErrorCatcher = (handler) => {
+  return (req, res) => {
     handler(req, res).catch((err) => {
       if (err instanceof ConflictingEntityError) {
         return res.status(CONFLICT).send();
@@ -14,8 +13,13 @@ export default (handler: Handler) => {
       if (err instanceof MissingEntityError) {
         return res.status(NOT_FOUND).send();
       }
+      if (err instanceof JsonSyntaxError) {
+        return res.status(BAD_REQUEST).send();
+      }
       /* istanbul ignore next */
       return res.status(INTERNAL_SERVER_ERROR).send();
     });
   };
 };
+
+export default errorCatcher;

@@ -5,7 +5,6 @@
 1. Install it with `npm i @js-entity-repos/express`.
 1. For each entity you will need to do the following.
     1. [Create an Entity interface](#entity-interface).
-    1. [Create a factory config](#factory-config).
     1. [Construct the facade](#construct-the-facade).
     1. [Use the facade](https://github.com/js-entity-repos/core/blob/master/docs/facade.md).
 
@@ -22,18 +21,18 @@ export interface TodoEntity extends Entity {
 }
 ```
 
-### Factory Config
-
-```ts
-import FactoryConfig from '@js-entity-repos/express/dist/FactoryConfig';
-
-const todoFactoryConfig: FactoryConfig<TodoEntity> = { service };
-```
-
 ### Construct the Facade
 
 ```ts
 import factory from '@js-entity-repos/express/dist/factory';
 
-const todosFacade = factory(todoFactoryConfig);
+const todosFacade = factory<TodoEntity>({
+  // Optional property that catches errors from handlers.
+  errorCatcher: (handler) => (req, res) => {
+    handler(req, res).catch((err) => {
+      res.status(500).send();
+    });
+  },
+  service,
+});
 ```

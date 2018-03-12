@@ -2,7 +2,8 @@ import ConflictingEntityError from '@js-entity-repos/core/dist/errors/Conflictin
 import MissingEntityError from '@js-entity-repos/core/dist/errors/MissingEntityError';
 import { BAD_REQUEST, CONFLICT, INTERNAL_SERVER_ERROR, NOT_FOUND } from 'http-status-codes';
 import ErrorCatcher from './ErrorCatcher';
-import JsonSyntaxError from './JsonSyntaxError';
+import JsonError from './JsonError';
+import NumberError from './NumberError';
 
 const errorCatcher: ErrorCatcher = (handler) => {
   return (req, res) => {
@@ -13,7 +14,10 @@ const errorCatcher: ErrorCatcher = (handler) => {
       if (err instanceof MissingEntityError) {
         return res.status(NOT_FOUND).send();
       }
-      if (err instanceof JsonSyntaxError) {
+      if (err instanceof JsonError) {
+        return res.status(BAD_REQUEST).send();
+      }
+      if (err instanceof NumberError) {
         return res.status(BAD_REQUEST).send();
       }
       /* istanbul ignore next */

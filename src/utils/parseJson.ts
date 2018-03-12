@@ -1,11 +1,11 @@
-import JsonSyntaxError from './JsonSyntaxError';
+import JsonError from './JsonError';
 
 export default (data: string, path: string[]) => {
   try {
     return JSON.parse(data);
   } catch (err) {
     if (err instanceof SyntaxError) {
-      throw new JsonSyntaxError(path);
+      throw new JsonError(data, path);
     }
     /* istanbul ignore next */
     throw err;

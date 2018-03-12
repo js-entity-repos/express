@@ -43,12 +43,19 @@ facadeTest(axiosFactory<TestEntity>({
 }));
 
 describe('facade', () => {
-  it('should not throw JSON error', async () => {
+  it('should not throw errors when not using any query params', async () => {
     const response = await axiosClient.get('/');
     assert.equal(response.status, OK);
   });
   it('should throw JSON error when using invalid filter', async () => {
     await axiosClient.get('/?filter=invalid_json').then((response) => {
+      return { response };
+    }).catch((err) => {
+      assert.equal(err.response.status, BAD_REQUEST);
+    });
+  });
+  it('should throw number error when using invalid limit', async () => {
+    await axiosClient.get('/?limit=invalid_number').then((response) => {
       return { response };
     }).catch((err) => {
       assert.equal(err.response.status, BAD_REQUEST);

@@ -27,7 +27,11 @@ export interface TodoEntity extends Entity {
 import factory from '@js-entity-repos/express/dist/factory';
 
 const todosFacade = factory<TodoEntity>({
-  // Optional property that determines the default pagination limit.
+  // Optional property that modifies a filter for the service.
+  constructFilter: (filter) => {
+    return filter;
+  },
+  // Optional property.
   defaultPaginationLimit: 10,
   // Optional property that catches errors from handlers.
   errorCatcher: (handler) => (req, res) => {

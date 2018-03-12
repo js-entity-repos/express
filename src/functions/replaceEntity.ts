@@ -9,7 +9,7 @@ export default <E extends Entity>(config: FacadeConfig<E>) => {
   return catchErrors(async (req: Request, res: Response) => {
     const { entity } = await config.service.replaceEntity({
       entity: req.body,
-      filter: getJsonQueryParam(req.query, 'filter'),
+      filter: config.constructFilter(getJsonQueryParam(req.query, 'filter')),
       id: req.params.id,
     });
     res.status(OK).json(entity);

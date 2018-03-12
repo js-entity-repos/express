@@ -16,6 +16,13 @@ export default <E extends Entity>(config: FacadeConfig<E>) => {
       },
       sort: getJsonQueryParam(req.query, 'sort'),
     });
-    res.status(OK).json(result);
+    res.status(OK);
+    if (result.nextCursor !== undefined) {
+      res.setHeader('x-entities-next-cursor', result.nextCursor);
+    }
+    if (result.previousCursor !== undefined) {
+      res.setHeader('x-entities-previous-cursor', result.previousCursor);
+    }
+    res.json(result.entities);
   });
 };

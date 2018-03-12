@@ -1,7 +1,7 @@
+import memoryFactory from '@js-entity-repos/memory/dist/factory';
 import * as express from 'express';
 import { createServer, Server } from 'http';
 import expressFactory from '../factory';
-import memoryRepo from './memoryRepo';
 
 export interface Config {
   readonly port: number;
@@ -11,8 +11,14 @@ export interface Config {
 export default ({ port, route }: Config): Promise<Server> => {
   return new Promise<Server>((resolve) => {
     const app = express();
+    const state = { entities: [] };
     app.use(route, expressFactory({
-      service: memoryRepo(),
+      service: memoryFactory({
+        defaultPaginationLimit: 100,
+        entityName: 'Test Entity',
+        getEntities: () => state.entities,
+        setEntities: (entities) => state.entities = entities,
+      }),
     }));
     const server = createServer(app);
     server.listen(port, () => {

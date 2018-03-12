@@ -10,7 +10,7 @@ export default <E extends Entity>(config: FacadeConfig<E>) => {
   return catchErrors(async (req: Request, res: Response) => {
     const limit = getNumberQueryParam(req.query, 'limit', config.defaultPaginationLimit);
     const result = await config.service.getEntities({
-      filter: getJsonQueryParam(req.query, 'filter'),
+      filter: config.constructFilter(getJsonQueryParam(req.query, 'filter')),
       pagination: {
         cursor: req.query.cursor,
         forward: req.query.forward === 'true',

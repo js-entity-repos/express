@@ -8,7 +8,7 @@ import getJsonQueryParam from '../utils/getJsonQueryParam';
 export default <E extends Entity>(config: FacadeConfig<E>) => {
   return catchErrors(async (req: Request, res: Response) => {
     await config.service.removeEntity({
-      filter: getJsonQueryParam(req.query, 'filter'),
+      filter: config.constructFilter(getJsonQueryParam(req.query, 'filter')),
       id: req.params.id,
     });
     res.status(NO_CONTENT).send();

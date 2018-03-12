@@ -15,6 +15,7 @@ import catchErrors from './utils/catchErrors';
 
 export default <E extends Entity>(factoryConfig: FactoryConfig<E>): Router => {
   const facadeConfig: FacadeConfig<E> = {
+    constructFilter: (filter) => filter,
     defaultPaginationLimit: 10,
     errorCatcher: catchErrors,
     ...factoryConfig,

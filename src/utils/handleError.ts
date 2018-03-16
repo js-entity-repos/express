@@ -14,31 +14,36 @@ const handleError: ErrorHandler = ({ res, err, transactionId }) => {
     res.status(statusCode).json(body);
   };
   if (err instanceof ConflictingEntityError) {
-    return sendErrorResponse(CONFLICT, {
+    sendErrorResponse(CONFLICT, {
       entityId: err.entityId,
       entityName: err.entityName,
     });
+    return;
   }
   if (err instanceof MissingEntityError) {
-    return sendErrorResponse(NOT_FOUND, {
+    sendErrorResponse(NOT_FOUND, {
       entityId: err.entityId,
       entityName: err.entityName,
     });
+    return;
   }
   if (err instanceof JsonError) {
-    return sendErrorResponse(BAD_REQUEST, {
+    sendErrorResponse(BAD_REQUEST, {
       data: err.data,
       path: err.path,
     });
+    return;
   }
   if (err instanceof NumberError) {
-    return sendErrorResponse(BAD_REQUEST, {
+    sendErrorResponse(BAD_REQUEST, {
       data: err.data,
       path: err.path,
     });
+    return;
   }
   /* istanbul ignore next */
-  return sendErrorResponse(INTERNAL_SERVER_ERROR, {});
+  sendErrorResponse(INTERNAL_SERVER_ERROR, {});
+  return;
 };
 
 export default handleError;

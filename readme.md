@@ -28,7 +28,8 @@ import factory from '@js-entity-repos/express/dist/factory';
 
 const todosFacade = factory<TodoEntity>({
   // Optional property that modifies a filter for the service.
-  constructFilter: (filter) => {
+  constructFilter: ({ filter, req, res }) => {
+    // This is a great place to put authentication and authorisation logic.
     return filter;
   },
   // Optional property. Defaults to 10.

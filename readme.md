@@ -33,13 +33,14 @@ const todosFacade = factory<TodoEntity>({
   },
   // Optional property.
   defaultPaginationLimit: 10,
-  // Optional property to handle transactions.
+  // Optional property to handle transactions. Defaults to "utils/handleTransaction".
   handleTransaction: async ({ req, res }, handler) => {
     // The transactionId allow items found in logs to be matched with responses to users.
     const transactionId = uuid();
     try {
       await handler({ transactionId });
     } catch (err) {
+      // The default handleTransaction uses "utils/handleError" here.
       console.error({ err, req, res, transactionId})
       res.status(500).send(transactionId);
     }

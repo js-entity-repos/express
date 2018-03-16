@@ -31,13 +31,15 @@ const todosFacade = factory<TodoEntity>({
   constructFilter: (filter) => {
     return filter;
   },
-  // Optional property.
+  // Optional property. Defaults to 10.
   defaultPaginationLimit: 10,
   // Optional property to handle transactions. Defaults to "utils/handleTransaction".
   handleTransaction: async ({ req, res }, handler) => {
     // The transactionId allow items found in logs to be matched with responses to users.
     const transactionId = uuid();
     try {
+      // This executes the Express request/response handler for a particular route.
+      // Avoid changing behaviour here for certain routes, create a Github issue and we can discuss your use case.
       await handler({ transactionId });
     } catch (err) {
       // The default handleTransaction uses "utils/handleError" here.

@@ -42,8 +42,10 @@ const handleError: ErrorHandler = ({ res, err, transactionId }) => {
     return;
   }
   /* istanbul ignore next */
-  sendErrorResponse(INTERNAL_SERVER_ERROR, {});
-  return;
+  {
+    sendErrorResponse(INTERNAL_SERVER_ERROR, {});
+    return;
+  }
 };
 
 export default handleError;

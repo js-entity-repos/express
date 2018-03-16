@@ -11,13 +11,13 @@ import patchEntities from './functions/patchEntities';
 import removeEntities from './functions/removeEntities';
 import removeEntity from './functions/removeEntity';
 import replaceEntity from './functions/replaceEntity';
-import handleError from './utils/handleError';
+import handleTransaction from './utils/handleTransaction';
 
 export default <E extends Entity>(factoryConfig: FactoryConfig<E>): Router => {
   const facadeConfig: FacadeConfig<E> = {
     constructFilter: (filter) => filter,
     defaultPaginationLimit: 10,
-    handleError,
+    handleTransaction,
     ...factoryConfig,
   };
   const router = Router();

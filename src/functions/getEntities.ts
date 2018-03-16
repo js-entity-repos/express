@@ -4,11 +4,10 @@ import { OK } from 'http-status-codes';
 import FacadeConfig from '../FacadeConfig';
 import getJsonQueryParam from '../utils/getJsonQueryParam';
 import getNumberQueryParam from '../utils/getNumberQueryParam';
-import handleTransaction from '../utils/handleTransaction';
 
 export default <E extends Entity>(config: FacadeConfig<E>) => {
   return async (req: Request, res: Response) => {
-    await handleTransaction({ config, req, res }, async () => {
+    await config.handleTransaction({ req, res }, async () => {
       const limit = getNumberQueryParam(req.query, 'limit', config.defaultPaginationLimit);
       const result = await config.service.getEntities({
         filter: config.constructFilter(getJsonQueryParam(req.query, 'filter')),

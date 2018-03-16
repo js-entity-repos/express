@@ -33,12 +33,17 @@ const todosFacade = factory<TodoEntity>({
   },
   // Optional property.
   defaultPaginationLimit: 10,
-  // Optional property that catches errors from handlers.
-  errorCatcher: (handler) => (req, res) => {
-    handler(req, res).catch((err) => {
-      res.status(500).send();
-    });
-  },
+  // Optional property to handle transactions.
+  handleTransaction: async ({ req, res }, handler) => {
+    // The transactionId allow items found in logs to be matched with responses to users.
+    const transactionId = uuid();
+    try {
+      await handler({ transactionId });
+    } catch (err) {
+      console.error({ err, req, res, transactionId})
+      res.status(500).send(transactionId);
+    }
+  };
   service,
 });
 ```

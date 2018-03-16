@@ -8,9 +8,10 @@ import getNumberQueryParam from '../utils/getNumberQueryParam';
 export default <E extends Entity>(config: FacadeConfig<E>) => {
   return async (req: Request, res: Response) => {
     await config.handleTransaction({ req, res }, async () => {
+      const filter = getJsonQueryParam(req.query, 'filter');
       const limit = getNumberQueryParam(req.query, 'limit', config.defaultPaginationLimit);
       const result = await config.service.getEntities({
-        filter: config.constructFilter(getJsonQueryParam(req.query, 'filter')),
+        filter: config.constructFilter({ filter, req, res }),
         pagination: {
           cursor: req.query.cursor,
           forward: req.query.forward === 'true',

@@ -7,8 +7,9 @@ import getJsonQueryParam from '../utils/getJsonQueryParam';
 export default <E extends Entity>(config: FacadeConfig<E>) => {
   return async (req: Request, res: Response) => {
     await config.handleTransaction({ req, res }, async () => {
+      const filter = getJsonQueryParam(req.query, 'filter');
       const { count } = await config.service.countEntities({
-        filter: config.constructFilter(getJsonQueryParam(req.query, 'filter')),
+        filter: config.constructFilter({ filter, req, res }),
       });
       res.status(OK).json(count);
     });

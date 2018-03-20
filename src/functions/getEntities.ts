@@ -14,7 +14,7 @@ export default <E extends Entity>(config: FacadeConfig<E>) => {
         filter: config.constructFilter({ filter, req, res }),
         pagination: {
           cursor: req.query.cursor,
-          forward: req.query.forward === 'true',
+          direction: req.query.direction,
           limit,
         },
         sort: getJsonQueryParam(req.query, 'sort'),

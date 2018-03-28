@@ -19,13 +19,16 @@ export default <E extends Entity>(config: FacadeConfig<E>) => {
         },
         sort: getJsonQueryParam(req.query, 'sort'),
       });
+
       res.status(OK);
-      if (result.nextCursor !== undefined) {
-        res.setHeader('x-entities-next-cursor', result.nextCursor);
+      if (result.backwardCursor !== undefined) {
+        res.setHeader('x-entities-backward-cursor', result.backwardCursor);
       }
-      if (result.previousCursor !== undefined) {
-        res.setHeader('x-entities-previous-cursor', result.previousCursor);
+      if (result.forwardCursor !== undefined) {
+        res.setHeader('x-entities-forward-cursor', result.forwardCursor);
       }
+      res.setHeader('x-entities-has-more-backward', result.hasMoreBackward.toString());
+      res.setHeader('x-entities-has-more-forward', result.hasMoreForward.toString());
       res.json(result.entities);
     });
   };

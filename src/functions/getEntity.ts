@@ -12,7 +12,7 @@ export default <E extends Entity>(config: FacadeConfig<E>) => {
         filter: config.constructFilter({ filter, req, res }),
         id: req.params.id,
       });
-      res.status(OK).json(entity);
+      res.status(OK).json(config.constructDocument({ entity, req, res }));
     });
   };
 };

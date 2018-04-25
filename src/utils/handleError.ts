@@ -43,6 +43,7 @@ const handleError: ErrorHandler = ({ res, err, transactionId }) => {
   }
   /* istanbul ignore next */
   {
+    console.log(err);
     sendErrorResponse(INTERNAL_SERVER_ERROR, {});
     return;
   }

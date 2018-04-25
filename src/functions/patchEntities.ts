@@ -11,9 +11,9 @@ export default <E extends Entity>(config: FacadeConfig<E>) => {
       const { entity } = await config.service.patchEntity({
         filter: config.constructFilter({ filter, req, res }),
         id: req.params.id,
-        patch: req.body,
+        patch: config.constructPatch({ document: req.body, req, res }),
       });
-      res.status(OK).json(entity);
+      res.status(OK).json(config.constructDocument({ entity, req, res }));
     });
   };
 };

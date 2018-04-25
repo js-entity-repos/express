@@ -29,7 +29,9 @@ export default <E extends Entity>(config: FacadeConfig<E>) => {
       }
       res.setHeader('x-entities-has-more-backward', result.hasMoreBackward.toString());
       res.setHeader('x-entities-has-more-forward', result.hasMoreForward.toString());
-      res.json(result.entities);
+      res.json(result.entities.map((entity) => {
+        return config.constructDocument({ entity, req, res });
+      }));
     });
   };
 };

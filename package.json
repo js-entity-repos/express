@@ -32,7 +32,7 @@
   "devDependencies": {
     "@ht2-labs/semantic-release": "1.0.31",
     "@ht2-labs/typescript-project": "1.0.10",
-    "@js-entity-repos/axios": "^5.0.0",
+    "@js-entity-repos/axios": "^5.0.1",
     "@js-entity-repos/memory": "^4.3.0",
     "@types/dotenv": "4.0.3",
     "@types/express": "4.11.1",
@@ -48,7 +48,7 @@
     "nyc": "11.7.1",
     "power-assert": "1.5.0",
     "rimraf": "2.6.2",
-    "source-map-support": "0.5.4"
+    "source-map-support": "0.5.5"
   },
   "publishConfig": {
     "access": "public"

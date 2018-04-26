@@ -15,7 +15,10 @@ import handleTransaction from './utils/handleTransaction';
 
 export default <E extends Entity>(factoryConfig: FactoryConfig<E>): Router => {
   const facadeConfig: FacadeConfig<E> = {
+    constructDocument: ({ entity }) => entity,
+    constructEntity: ({ document }) => document,
     constructFilter: ({ filter }) => filter,
+    constructPatch: ({ document }) => document,
     defaultPaginationLimit: 10,
     handleTransaction,
     ...factoryConfig,

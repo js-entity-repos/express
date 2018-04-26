@@ -27,10 +27,21 @@ export interface TodoEntity extends Entity {
 import factory from '@js-entity-repos/express/dist/factory';
 
 const todosFacade = factory<TodoEntity>({
+  // Optional property to convert an entity to a response body. Defaults to the function below.
+  constructDocument: ({ entity, req, res }) => {
+    return entity;
+  },
+  // Optional property to convert a request body to an entity. Defaults to the function below.
+  constructEntity: ({ document, req, res }) => {
+    return document;
+  },
   // Optional property that modifies a filter for the service.
   constructFilter: ({ filter, req, res }) => {
-    // This is a great place to put authentication and authorisation logic.
     return filter;
+  },
+  // Optional property to convert a request body to a patch. Defaults to the function below.
+  constructPatch: ({ document, req, res }) => {
+    return document;
   },
   // Optional property. Defaults to 10.
   defaultPaginationLimit: 10,

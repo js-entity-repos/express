@@ -7,7 +7,7 @@ import countEntities from './functions/countEntities';
 import createEntity from './functions/createEntity';
 import getEntities from './functions/getEntities';
 import getEntity from './functions/getEntity';
-import patchEntities from './functions/patchEntities';
+import patchEntity from './functions/patchEntity';
 import removeEntities from './functions/removeEntities';
 import removeEntity from './functions/removeEntity';
 import replaceEntity from './functions/replaceEntity';
@@ -30,7 +30,7 @@ export default <E extends Entity>(factoryConfig: FactoryConfig<E>): Router => {
   router.get('/count', countEntities(facadeConfig));
   router.delete('/:id', removeEntity(facadeConfig));
   router.get('/:id', getEntity(facadeConfig));
-  router.patch('/:id', patchEntities(facadeConfig));
+  router.patch('/:id', patchEntity(facadeConfig));
   router.put('/:id', replaceEntity(facadeConfig));
   router.delete('', removeEntities(facadeConfig));
   router.get('', getEntities(facadeConfig));
